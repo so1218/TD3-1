@@ -1,5 +1,6 @@
 #include "MapChip.h"
 
+
 static int GetLTblock()
 {
 	Vector2 PlayerLTpos{};

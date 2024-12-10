@@ -1,7 +1,7 @@
 #pragma once
 #include <Vector2.h>
 
-class MapChipJ
+class MapChipJudgementBlock
 {
 public:
 	static int GetLTblock();
