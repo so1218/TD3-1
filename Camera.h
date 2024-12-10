@@ -2,28 +2,57 @@
 
 #include "Structures.h"
 
-//矩形の単体シェイク処理
-void RectangleShakeCamera(RectangleObject* ro);
+class Camera
+{
+public:
 
-// カメラ更新
+    //コンストラクタ
+    Camera();
 
-//プレイヤーのワールド行列
-Matrix3x3 MakePlayerWorldMatrix(const RectangleObject* ro, const Camera& camera);
+    //メンバ変数
 
-//カメラのワールド行列
-Matrix3x3 MakeCameraWorldMatrix(const Camera& camera);
+    // カメラの振れ幅、シェイクの信号
+    bool isShake = false;
 
-//ビュー行列
-Matrix3x3 MakeViewMatrix(const Camera& camera);
+    // シェイク関係
+    int shakeDuration = 20;
+    int shakeCounter = 0;
+    int magnitude = 15;
+    IntVector2 shakingPos = {};
 
-//正射影行列
-Matrix3x3 MakeOrthographicMatrix();
+    // ワールド座標
+    Vector2 pos = { 325,175 };
+    Vector2 scale = { 1.0f,1.0f };
+    float theta = { 0.0f };
 
-//ビューポート行列
-Matrix3x3 MakeViewportMatrix();
+    RectangleObject rect;
 
-//矩形をカメラ座標に変換
-void MakeCameraMatrix(RectangleObject* ro, const Camera& camera);
+    //メンバ関数
 
-//矩形のカメラのデバッグ用関数
-void DebugCameraRectangle(GameManager* gm, RectangleObject* ro);
+    // カメラのシェイク処理
+    void Shake();
+
+    // カメラ行列の作成
+    void MakeCameraMatrix(RectangleObject* ro);
+
+    //矩形のカメラのデバッグ用関数
+    void DebugCameraMovement(GameManager* gm, RectangleObject* ro);
+
+private:
+
+    // 行列計算関数群
+    Matrix3x3 Multiply(Matrix3x3 matrix1, Matrix3x3 matrix2);
+    Matrix3x3 InverseMatrix(Matrix3x3 matrix);
+    Matrix3x3 MakeRotateMatrix(float theta);
+    Matrix3x3 MakeScaleMatrix(Vector2 scale);
+    Matrix3x3 MakeTranslateMatrix(Vector2 translate);
+    Vector2 Transform(Vector2 vector, Matrix3x3 matrix);
+    Matrix3x3 MakeAffineMatrix(Vector2 scale, float rotate, Vector2 translate);
+    Matrix3x3 MakeRectangleWorldMatrix(const RectangleObject* ro);
+    Matrix3x3 MakeCameraWorldMatrix();
+    Matrix3x3 MakeViewMatrix();
+    Matrix3x3 MakeOrthographicMatrix(float left, float top,
+        float right, float bottom);
+    Matrix3x3 MakeViewportMatrix(float left, float top,
+        float right, float bottom);
+};

@@ -1,19 +1,19 @@
 #include "Structures.h"
 #include "Player.h"
 
-
-void DrawQuadWithData(RectangleObject* ro, float srcW, float srcH, int GH, int spriteNum, unsigned int color)
+//矩形の描画関数
+void DrawQuadWithData(RectangleObject* ro, float srcW, float srcH, int GH, int spriteNumX, int spriteNumY, unsigned int color)
 {
     Novice::DrawQuad(
-        static_cast<int>(ro->sVertex.LT.x + ro->camera.randCamera.x),
-        static_cast<int>(ro->sVertex.LT.y + ro->camera.randCamera.y),
-        static_cast<int>(ro->sVertex.RT.x + ro->camera.randCamera.x),
-        static_cast<int>(ro->sVertex.RT.y + ro->camera.randCamera.y),
-        static_cast<int>(ro->sVertex.LB.x + ro->camera.randCamera.x),
-        static_cast<int>(ro->sVertex.LB.y + ro->camera.randCamera.y),
-        static_cast<int>(ro->sVertex.RB.x + ro->camera.randCamera.x),
-        static_cast<int>(ro->sVertex.RB.y + ro->camera.randCamera.y),
-        int(srcW * spriteNum), int(srcH * spriteNum), int(srcW), int(srcH), GH, color);
+        static_cast<int>(ro->sVertex.LT.x),
+        static_cast<int>(ro->sVertex.LT.y),
+        static_cast<int>(ro->sVertex.RT.x),
+        static_cast<int>(ro->sVertex.RT.y),
+        static_cast<int>(ro->sVertex.LB.x),
+        static_cast<int>(ro->sVertex.LB.y),
+        static_cast<int>(ro->sVertex.RB.x),
+        static_cast<int>(ro->sVertex.RB.y),
+        int(srcW * spriteNumX), int(srcH * spriteNumY), int(srcW), int(srcH), GH, color);
 }
 
 
@@ -52,11 +52,11 @@ Color HSVtoRGB(float h, float s, float v) {
     return Color((unsigned int)(r * 255), (unsigned int)(g * 255));
 }
 
-// HSVから0xRRGGBBAA形式のunsigned intカラーコードを生成する関数
+// HSVから0xRRGGBBAAのunsigned intカラーコードを生成する関数
 unsigned int HSVtoColorCode(float h, float s, float v) {
     // HSVをRGBに変換
     Color color = HSVtoRGB(h, s, v);
 
-    // RGBA形式で返す (0xRRGGBBAA)
+    // RGBAで返す 
     return (color.a << 24) | (color.r << 16) | (color.g << 8) | color.b;
 }

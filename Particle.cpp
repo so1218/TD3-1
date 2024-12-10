@@ -1,4 +1,4 @@
-﻿#include "BezierCurve.h"
+#include "BezierCurve.h"
 #include "Calculate.h"
 #include "Draw.h"
 #include "Easing.h"
@@ -81,7 +81,7 @@ void DrawCenterToAroundParticle(Particle* particles, int amount)
         if (particle.isExist) {
             UpdateBlendMode(&particle.blendMode);
 
-            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, particle.color);
+            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, 0, particle.color);
 
             ResetBlendMode();
         }
@@ -176,7 +176,7 @@ void DrawGoUpAroundParticle(Particle* particles, int amount)
         if (particle.isExist) {
             UpdateBlendMode(&particle.blendMode);
 
-            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, particle.color);
+            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, 0, particle.color);
 
             ResetBlendMode();
         }
@@ -275,7 +275,7 @@ void DrawLikeSmokeParticle(Particle* particles, int amount)
         if (particle.isExist) {
             UpdateBlendMode(&particle.blendMode);
 
-            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, particle.color);
+            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, 0, particle.color);
 
             ResetBlendMode();
         }
@@ -427,7 +427,7 @@ void DrawGoUpGravityParticle(Particle* particles, int amount)
 
         if (particle.isExist) {
 
-            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, particle.color);
+            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, 0, particle.color);
         }
 
         ResetBlendMode();
@@ -538,7 +538,7 @@ void DrawImpactDustCloudParticle(Particle* particles, int amount)
         if (particle.isExist) {
             UpdateBlendMode(&particle.blendMode);
 
-            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, particle.color);
+            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, 0, particle.color);
 
             ResetBlendMode();
         }
@@ -659,7 +659,7 @@ void DrawFireworkParticle(Particle* particles, int amount)
         if (particle.isExist) {
             UpdateBlendMode(&particle.blendMode);
 
-            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, particle.color);
+            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, 0, particle.color);
 
             ResetBlendMode();
         }
@@ -780,7 +780,7 @@ void DrawNanameJuujiParticle(Particle* particles, int amount)
         if (particle.isExist) {
             UpdateBlendMode(&particle.blendMode);
 
-            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, particle.color);
+            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, 0, particle.color);
 
             ResetBlendMode();
         }
@@ -901,7 +901,7 @@ void DrawExplosionParticle(Particle* particles, int amount)
         if (particle.isExist) {
             UpdateBlendMode(&particle.blendMode);
 
-            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, particle.color);
+            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, 0, particle.color);
 
             ResetBlendMode();
         }
@@ -1025,7 +1025,7 @@ void DrawMinorExplosionParticle(Particle* particles, int amount)
         if (particle.isExist) {
             UpdateBlendMode(&particle.blendMode);
 
-            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, particle.color);
+            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, 0, particle.color);
 
             ResetBlendMode();
         }
@@ -1119,7 +1119,7 @@ void DrawToCenterParticle(Particle* particles, int amount)
         if (particle.isExist) {
             UpdateBlendMode(&particle.blendMode);
 
-            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, particle.color);
+            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, 0, particle.color);
 
             ResetBlendMode();
         }
@@ -1275,7 +1275,7 @@ void DrawMeteoriteParticle(Particle* particles, int amount)
         }
 
         if (particle.isExist) {
-            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, particle.color);
+            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, 0, particle.color);
         }
 
         ResetBlendMode();
@@ -1435,7 +1435,7 @@ void DrawTornadeParticle(Particle* particles, int amount)
 
         if (particle.isExist) {
 
-            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, particle.color);
+            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, 0, particle.color);
         }
 
         ResetBlendMode();
@@ -1538,7 +1538,7 @@ void DrawAppearAroundParticle(Particle* particles, int amount)
         if (particle.isExist) {
             UpdateBlendMode(&particle.blendMode);
 
-            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, particle.color);
+            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, 0, particle.color);
 
             ResetBlendMode();
         }
@@ -1655,7 +1655,7 @@ void DrawPlaySceneParticle(Particle* particles, int amount)
         if (particle.isExist) {
             UpdateBlendMode(&particle.blendMode);
 
-            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, particle.color);
+            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, 0, particle.color);
 
             ResetBlendMode();
         }
@@ -1771,7 +1771,7 @@ void DrawSelectSceneParticle(Particle* particles, int amount)
         if (particle.isExist) {
             UpdateBlendMode(&particle.blendMode);
 
-            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, particle.color);
+            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, 0, particle.color);
 
             ResetBlendMode();
         }
@@ -1904,7 +1904,7 @@ void DrawTitleSceneParticle(Particle* particles, int amount)
         if (particle.isExist) {
             UpdateBlendMode(&particle.blendMode);
 
-            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, particle.color);
+            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, 0, particle.color);
 
             ResetBlendMode();
         }
@@ -2097,7 +2097,7 @@ void DrawTitleWindParticle(Particle* particles, int amount)
 
         if (particle.isExist) {
 
-            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, particle.color);
+            DrawQuadWithData(&particle, particle.srcW, particle.srcH, particle.GH, particle.spriteNum, 0, particle.color);
         }
 
         ResetBlendMode();

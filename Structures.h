@@ -11,12 +11,6 @@
 const int kWindowWidth = 1300;
 const int kWindowHeight = 700;
 
-
-//透明色
-const unsigned int transparent = 0x00000000;
-//有色(黒)
-const unsigned int opaque = 0x000000FF;
-
 //シーン
 enum Scene
 {
@@ -70,15 +64,16 @@ struct Easing
 	int frameCount = 0;
 	int runCount = 0;
 
+	unsigned int fadeColor = 0x00000000;
 
-	unsigned int fadeColor = transparent;
-
-	unsigned int startColor = opaque;
+	//スタートの変数
+	unsigned int startColor = 0x000000ff;
 	int intStartPos = 0;
 	float floatStartPos = 0.0f;
 	Vector2 vec2StartPos = { 0.0f,0.0f };
 
-	unsigned int endColor = opaque;
+	//エンドの変数
+	unsigned int endColor = 0x000000ff;
 	int intEndPos = 0;
 	float floatEndPos = 0.0f;
 	Vector2 vec2EndPos = { 0.0f,0.0f };
@@ -103,31 +98,30 @@ struct VertexOnMap
 	IntVector2 RB;
 };
 
-//カメラ関係の構造体
-struct Camera
-{
-	
-	//カメラの振れ幅
-	//シェイクの信号
-	bool isShake = false;
-
-	//シェイク関係
-	int shakeDuration = 20;
-	int shakeCounter = 0;
-	int magnitude = 15;
-	IntVector2 randCamera = {};
-	
-	//ワールド座標
-	Vector2 pos = { 325,175 };
-	Vector2 scale = { 1.0f,1.0f };
-	float theta = { 0.0f };
-
-};
+////カメラ関係の構造体
+//struct Camera
+//{
+//	
+//	//カメラの振れ幅
+//	//シェイクの信号
+//	bool isShake = false;
+//
+//	//シェイク関係
+//	int shakeDuration = 20;
+//	int shakeCounter = 0;
+//	int magnitude = 15;
+//	IntVector2 shakingPos = {};
+//	
+//	//ワールド座標
+//	Vector2 pos = { 325,175 };
+//	Vector2 scale = { 1.0f,1.0f };
+//	float theta = { 0.0f };
+//
+//};
 
 // 四角形の構造体
 struct RectangleObject
 {
-
 	Vector2 pos;
 
 	// 移動前の座標
@@ -140,7 +134,8 @@ struct RectangleObject
 
 	unsigned int color = 0x000000ff;
 
-	Vector2 centerPos = { 0,0 };
+	//ワールド座標の中心の座標
+	Vector2 wCenterPos = { 0,0 };
 	// ワールド用の４つ角 
 	Vertex wVertex;
 	// スクリーン用の４つ角 
@@ -154,12 +149,10 @@ struct RectangleObject
 	float width = 40;
 	float height = 40;
 
-	Camera camera;
-
+	
 	Vector2 line = { 0.0f,0.0f };
 	Vector2 scroll = { 0,0 };
 };
-
 
 struct Circle
 {
@@ -224,22 +217,21 @@ struct GameObject :RectangleObject, PhysicalElements
 	BlendModeFunc blendMode;
 };
 
-
-
 // マップチップに関する構造体
-struct MapChip :GameObject
-{
-	int chipType = 0;                       //チップの種類
-
-	Vector2 pos;
-
-	float height = 50.0f;
-	float width = 50.0f;
-
-	unsigned int color = WHITE;
-
-	RectangleObject ro;
-};
+//struct MapChip :GameObject
+//{
+//	//チップの種類
+//	int chipType = 0;                  
+//
+//	Vector2 pos;
+//
+//	float height = 50.0f;
+//	float width = 50.0f;
+//
+//	unsigned int color = WHITE;
+//
+//	RectangleObject ro;
+//};
 
 struct GameManager
 {
@@ -249,7 +241,6 @@ struct GameManager
 
 	int numJoysticks = Novice::GetNumberOfJoysticks();
 
-	Camera camera;
 	//画面外境界線。mainの画面サイズの書き換えも手打ち。マップチップのサイズ等で変動あり
 	static constexpr float screenTop = 700;
 	static constexpr float screenLeft = 0;
@@ -301,48 +292,48 @@ struct Color
 };
 
 //マップに関する構造体
-struct Map
-{
-	static const int kFloorWidth = 26;		//マップチップの横個数
-	static const int kFloorHeight = 14;	    //縦個数
-	static const int stageSum = 1;          //ステージの総数
-	int stageNo = 0;                        //ステージのナンバリング。セレクトシーンで変更。
-
-	Easing easing;
-	Vector2 pos;
-
-	float easingTimer = 0.0f;
-
-	enum ChipType
-	{
-		none = 0,
-		block = 1,
-	}chipType = none;
-
-	int backType = 0;
-
-	
-	MapChip chip[kFloorHeight][kFloorWidth];
-
-	Map()
-	{
-		//チップの座標と４つ角を設定
-		for (int i = 0; i < kFloorHeight; ++i)
-		{
-			for (int j = 0; j < kFloorWidth; ++j)
-			{
-				chip[i][j].ro.centerPos.x = float(chip[i][j].width / 2.0f + (j * chip[i][j].width));
-				chip[i][j].ro.centerPos.y = float(GameManager::screenTop - chip[i][j].height / 2.0f - (i * chip[i][j].height));
-			}
-		}
-	}
-
-	// 補完用の変数
-	float targetPosX[kFloorHeight][kFloorWidth]; // ターゲットのX位置
-	float targetPosY[kFloorHeight][kFloorWidth]; // ターゲットのY位置
-	float moveSpeed = 0.0f; // 補完速度
-
-};
+//struct Map
+//{
+//	static const int kFloorWidth = 26;		//マップチップの横個数
+//	static const int kFloorHeight = 14;	    //縦個数
+//	static const int stageSum = 1;          //ステージの総数
+//	int stageNo = 0;                        //ステージのナンバリング。セレクトシーンで変更。
+//
+//	Easing easing;
+//	Vector2 pos;
+//
+//	float easingTimer = 0.0f;
+//
+//	enum ChipType
+//	{
+//		none = 0,
+//		block = 1,
+//	}chipType = none;
+//
+//	int backType = 0;
+//
+//	
+//	MapChip chip[kFloorHeight][kFloorWidth];
+//
+//	Map()
+//	{
+//		//チップの座標と４つ角を設定
+//		for (int i = 0; i < kFloorHeight; ++i)
+//		{
+//			for (int j = 0; j < kFloorWidth; ++j)
+//			{
+//				chip[i][j].ro.wCenterPos.x = float(chip[i][j].width / 2.0f + (j * chip[i][j].width));
+//				chip[i][j].ro.wCenterPos.y = float(GameManager::screenTop - chip[i][j].height / 2.0f - (i * chip[i][j].height));
+//			}
+//		}
+//	}
+//
+//	// 補完用の変数
+//	float targetPosX[kFloorHeight][kFloorWidth]; // ターゲットのX位置
+//	float targetPosY[kFloorHeight][kFloorWidth]; // ターゲットのY位置
+//	float moveSpeed = 0.0f; // 補完速度
+//
+//};
 
 //ノックバックの構造体
 struct Knockback :PhysicalElements

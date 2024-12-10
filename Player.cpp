@@ -8,6 +8,7 @@
 #include "Easing.h"
 #include "Camera.h"
 #include "Function.h"
+#include <imgui.h>
 
 //========================================================
 // プレイヤーの挙動
@@ -15,8 +16,8 @@
 
 Player::Player(float posX, float posY, float speedX, float speedY)
 {
-    ro_.centerPos.x = posX;
-    ro_.centerPos.y = posY;
+    ro_.wCenterPos.x = posX;
+    ro_.wCenterPos.y = posY;
     velocity_.x = speedX;
     velocity_.y = speedY;
     radius_ = 10;
@@ -29,19 +30,28 @@ Player::~Player()
 };
 
 
-void Player::Move(GameManager* gm)
+void Player::Move(GameManager* gm, Camera* camera)
 {
    
     // キーボードでの移動
-   
-    if (gm->keys[DIK_D]) { ro_.centerPos.x += 5.0f; }
-    if (gm->keys[DIK_A]) { ro_.centerPos.x -= 5.0f; }
-    if (gm->keys[DIK_W]) { ro_.centerPos.y += 5.0f; }
-    if (gm->keys[DIK_S]) { ro_.centerPos.y -= 5.0f; }
-  
-    DebugCameraRectangle(gm, &ro_);
+    if (gm->keys[DIK_W]) 
+    {
+        ro_.wCenterPos.y += 5.0f; 
+    }
+    if(gm->keys[DIK_S]) 
+    {
+        ro_.wCenterPos.y -= 5.0f;
+    }
+    if (gm->keys[DIK_D])
+    {
+        ro_.wCenterPos.x += 5.0f;
+    }
+    if (gm->keys[DIK_A])
+    {
+        ro_.wCenterPos.x -= 5.0f;
+    }
 
-    MakeCameraMatrix(&ro_, ro_.camera);
+    camera->MakeCameraMatrix(&ro_);
 }
 
 
@@ -52,17 +62,18 @@ void Player::Move(GameManager* gm)
 // プレイヤーのデバック(デバックモードのみ)
 void ScreenPrintfPlayer()
 {
-
+   
 }
 
 //	プレイヤーの描画
 void Player::Draw()
 {
     
+    DrawQuadWithData(&ro_, 0, 0, 0, 0, 0, color_);
 
-    DrawQuadWithData(&ro_, 0, 0, 0, 0, color_);
-
-    
+    ImGui::Begin("Window");
+    ImGui::DragFloat2("ro_.centerPos.x", &ro_.wCenterPos.x, 0.01f);
+    ImGui::End();
 
 #if defined(_DEBUG)
 	ScreenPrintfPlayer();

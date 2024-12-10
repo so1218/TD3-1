@@ -145,7 +145,6 @@ void CountEaseInOutTimer(const unsigned int end, unsigned int& current, Easing& 
 	}
 	else 
 	{
-
 		easing.timer += easing.interval;
 		easing.easeTimer = EaseInOut(easing.timer);
 

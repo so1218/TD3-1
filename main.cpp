@@ -54,7 +54,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	Player* p_player = new Player(650.0f, 350.0f, 4.0f, 4.0f);
 
-
+	Camera* p_camera = new Camera;
+	
 	GameManager* p_gm;
 	p_gm = new GameManager;
 
@@ -63,14 +64,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	InitTitleScene();
 	InitSelectScene();
-	MapSetting(p_map);
+	p_map->SetMap();
 	InitPlayScene(p_player);
 	AudioInitialize();
 
 #if defined(_DEBUG)
-	p_map->stageNo = 0;
+	p_map->SetStageNo(0);
 #else
-	p_map->stageNo = 0;
+	p_map->SetStageNo(0);
 #endif
 
 	//プレイシーンの中に必要な変数を格納
@@ -111,7 +112,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		case Play:
 
-			currentScene = UpdatePlayScene(p_player, p_map, p_gm);
+			currentScene = UpdatePlayScene(p_player, p_map, p_gm, p_camera);
 
 			break;
 

@@ -15,21 +15,21 @@
 // プレイシーンの更新処理
 //========================================================
 
-Scene UpdatePlayScene(Player* player, Map* map, GameManager* gm)
+Scene UpdatePlayScene(Player* player, Map* map, GameManager* gm, Camera* camera)
 {
 	Scene nextScene = Play;
 
-	player->Move(gm);
+	player->Move(gm, camera);
 
-	for (int i = 0; i < map->kFloorHeight; ++i)
+	for (int i = 0; i < map->GetFloorHeight(); ++i)
 	{
-		for (int j = 0; j < map->kFloorWidth; ++j)
+		for (int j = 0; j < map->GetFloorWidth(); ++j)
 		{
-			DebugCameraRectangle(gm, &map->chip[i][j].ro);
-
-			MakeCameraMatrix(&map->chip[i][j].ro, map->chip[i][j].ro.camera);
+			camera->MakeCameraMatrix(&map->GetChip(j,i).GetRectangleObject());
 		}
 	}
+
+	camera->DebugCameraMovement(gm, &player->GetRectangleObject());
 				
 	return nextScene;
 
@@ -48,7 +48,7 @@ void ScreenPrintfPlayScene()
 // プレイシーンの描画
 void DrawPlayScene(Player *player, Map* map)
 {
-	DrawMap(map);
+	map->DrawMap();
 
 	player->Draw();
 

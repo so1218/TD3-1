@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "Structures.h"
 
@@ -7,3 +7,4 @@ void UpdateBlendMode(BlendModeFunc* blendMode);
 
 // ブレンドモードのリセット処理
 void ResetBlendMode();
+
