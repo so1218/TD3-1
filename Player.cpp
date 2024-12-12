@@ -40,22 +40,18 @@ void Player::Move(GameManager* gm, Camera* camera, Map* map)
     if (gm->keys[DIK_W]) 
     {
         ro_.wCenterPos.y += 5.0f; 
-        ro_.isPressUp = true;
     }
     else if(gm->keys[DIK_S]) 
     {
         ro_.wCenterPos.y -= 5.0f;
-        ro_.isPressDown = true;
     }
     else if (gm->keys[DIK_D])
     {
         ro_.wCenterPos.x += 5.0f;
-        ro_.isPressRight = true;
     }
     else if (gm->keys[DIK_A])
     {
         ro_.wCenterPos.x -= 5.0f;
-        ro_.isPressLeft = true;
     }
 
     ro_.wCenterCurrentChipNo[0] = int((ro_.wCenterPos.y) / map->GetChip(0, 0).GetHeight());
@@ -72,75 +68,81 @@ void Player::Move(GameManager* gm, Camera* camera, Map* map)
     ro_.currentChipNo.RB = { static_cast<int>(ro_.wVertex.RB.x / map->GetChip(0, 0).GetWidth()),
                             static_cast<int>((ro_.wVertex.RB.y) / map->GetChip(0, 0).GetHeight()) };
 
-    // 各角の衝突判定
-    if (map->GetChip(int(ro_.currentChipNo.LT.x), 
-        int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none
-        &&
-        map->GetChip(int(ro_.currentChipNo.LB.x),
-        int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none)
+// 各角の衝突判定
+    if (gm->keys[DIK_W])
     {
-        ro_.canMoveLeft = true;
-    }
-    if (map->GetChip(int(ro_.currentChipNo.RT.x),
-        int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::none
-        &&
-        map->GetChip(int(ro_.currentChipNo.RB.x),
-        int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
-    {
-        ro_.canMoveRight = true;
-    }
-    if (map->GetChip(int(ro_.currentChipNo.LT.x),
-        int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none
-        &&
-        map->GetChip(int(ro_.currentChipNo.RT.x),
-        int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::none)
-    {
-        ro_.canMoveUp = true;
-    }
-    if (map->GetChip(int(ro_.currentChipNo.LB.x),
-        int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none
-        &&
-        map->GetChip(int(ro_.currentChipNo.RB.x),
-        int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
-    {
-        ro_.canMoveDown = true;
-    }
-
-    if (ro_.canMoveUp)
-    {
-        if (!ro_.canMoveLeft || !ro_.canMoveRight)
+        while (map->GetChip(int(ro_.currentChipNo.LT.x), int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::block
+            ||
+            map->GetChip(int(ro_.currentChipNo.RT.x), int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::block)
         {
-            if (ro_.isPressUp)
-            {
-                ro_.wCenterPos.y = ro_.preWCenterPos.y - 5.0f / 2.0f;
-            }
+            ro_.wCenterPos.y -= 0.1f;
         }
     }
-    else
+    if (gm->keys[DIK_S])
     {
-        ro_.wCenterPos.y = static_cast<float>(
-            (static_cast<int>(ro_.wVertex.LT.y) / map->GetChip(0, 0).GetHeight() + 1) *
-            map->GetChip(0, 0).GetHeight() * ro_.height / 2
-        );
-    }
-
-    if (ro_.canMoveDown)
-    {
-        if (!ro_.canMoveLeft || !ro_.canMoveRight)
+        while (map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::block
+            ||
+            map->GetChip(int(ro_.currentChipNo.RB.x), int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::block)
         {
-            if (ro_.isPressDown)
-            {
-                ro_.wCenterPos.y = ro_.preWCenterPos.y - 5.0f / 2.0f;
-            }
+            ro_.wCenterPos.y += 0.1f;
         }
     }
-    else
+    if (gm->keys[DIK_D])
     {
-        ro_.wCenterPos.y = static_cast<float>(
-            (static_cast<int>(ro_.wVertex.LT.y) / map->GetChip(0, 0).GetHeight() + 1) *
-            map->GetChip(0, 0).GetHeight() * ro_.height / 2
-            );
+        while (map->GetChip(int(ro_.currentChipNo.RT.x), int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::block
+            ||
+            map->GetChip(int(ro_.currentChipNo.RB.x), int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::block)
+        {
+            ro_.wCenterPos.x -= 0.1f;
+        }
     }
+    if (gm->keys[DIK_A])
+    {
+        while (map->GetChip(int(ro_.currentChipNo.LT.x), int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::block
+            ||
+            map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::block)
+        {
+            ro_.wCenterPos.x += 0.1f;
+        }
+    }
+
+
+
+
+
+    //if (map->GetChip(int(ro_.currentChipNo.LT.x), 
+    //    int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none
+    //    &&
+    //    map->GetChip(int(ro_.currentChipNo.LB.x),
+    //    int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none)
+    //{
+    //    ro_.canMoveLeft = true;
+    //}
+    //if (map->GetChip(int(ro_.currentChipNo.RT.x),
+    //    int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::none
+    //    &&
+    //    map->GetChip(int(ro_.currentChipNo.RB.x),
+    //    int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
+    //{
+    //    ro_.canMoveRight = true;
+    //}
+    //if (map->GetChip(int(ro_.currentChipNo.LT.x),
+    //    int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none
+    //    &&
+    //    map->GetChip(int(ro_.currentChipNo.RT.x),
+    //    int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::none)
+    //{
+    //    ro_.canMoveUp = true;
+    //}
+    //if (map->GetChip(int(ro_.currentChipNo.LB.x),
+    //    int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none
+    //    &&
+    //    map->GetChip(int(ro_.currentChipNo.RB.x),
+    //    int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
+    //{
+    //    ro_.canMoveDown = true;
+    //}
+
   
     camera->MakeCameraMatrix(&ro_);
 }
