@@ -8,31 +8,84 @@ void UpdateCenterToAroundParticle(Particle* particles,int amount, Vector2* start
 void DrawCenterToAroundParticle(Particle* particles, int amount);
 void InitCenterToAroundParticle(Particle* particles, int amount);
 
-//class Particle : public GameObject {
+//class Particle :GameObject{
 //public:
-//    bool isEmit = false;
-//    unsigned int colorRGB = 0x000000;
-//    unsigned int colorAlpha = 0xff;
+//    Particle(); // コンストラクタ
 //
-//    float lifetime;
-//    int elapsedTime = 0;
-//    int direction;
-//    float radius = 10.0f;
-//    IntVector2 emitterRange = { 80, 80 };
-//    IntVector2 activeDistance = { 60, 60 };
-//    Vector2 speed = {};
-//    float gravity = 0.7f;
-//    int appearInterval = 20;
-//    int randNum = 0;
-//    Vector2 speedRange = { 2.0f, 2.0f };
-//    Vector2 speedAdd = { 1.0f, 1.0f };
+//    void Init(Vector2 startPos);
+//    void Update();
+//    void Draw();
 //
+//	bool isEmit = false;
+//
+//	unsigned int colorRGB = 0x000000;
+//	unsigned int colorAlpha = 0xff;
+//
+//	float lifetime;
+//	int elapsedTime = 0;
+//	int direction;
+//	float radius = 10.0f;
+//	IntVector2 emitterRange = { 80,80 };
+//	IntVector2 activeDistance = { 60,60 };
+//	Vector2 speed = {};
+//	float gravity = 0.7f;
+//	int appearInterval = 20;
+//	int randNum = 0;
+//	Vector2 speedRange = { 2.0f,2.0f };
+//	Vector2 speedAdd = { 1.0f,1.0f };
+//
+//	BlendModeFunc blendMode;
+//	Knockback knockback;
+//
+//	Easing easingInOut;
+//	Easing easingOut;
+//	Easing easingIn;
+//
+//	//ベジエ曲線のデータ
+//	Vector2 p0;
+//	Vector2 p1;
+//	Vector2 p2;
+//	Vector2 p3;
+//	Vector2 p4;
+//	Vector2 p5;
+//	Vector2 center;
+//
+//	bool hasExisted = false;
+//
+//	int amount;
+//
+//	AfterImage afterImage;
+//
+//    // パーティクルの各種パラメータ
+//    bool isExist = false;
+//    bool hasExisted = false;
+//    Vector2 pos;
+//    Vector2 velocity;
+//    Vector2 speed;
+//    Vector2 initialPos;
+//    int appearInterval = 4;
+//    int frameCount = 0;
+//    float angle = 0.0f;
+//    Color color;
 //    BlendModeFunc blendMode;
-//    Knockback knockback;
-//
 //    Easing easingInOut;
 //    Easing easingOut;
-//    Easing easingIn;
+//
+//   
+//};
+//
+//class ParticleSystem {
+//public:
+//    ParticleSystem(int amount);
+//    ~ParticleSystem();
+//
+//    void Update(Vector2 startPos);
+//    void Draw();
+//    void Init(Vector2 startPos);
+//
+//private:
+//    std::vector<Particle> particles;
+//    int amount;
 //};
 
 //上に向かって周囲にEmitterRangeの範囲で発生するパーティクル(aroundParticle->amountを初期化すること)

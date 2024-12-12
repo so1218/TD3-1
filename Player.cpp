@@ -61,14 +61,16 @@ void Player::Move(GameManager* gm, Camera* camera, Map* map)
     ro_.wCenterCurrentChipNo[0] = int((ro_.wCenterPos.y) / map->GetChip(0, 0).GetHeight());
     ro_.wCenterCurrentChipNo[1] = int(ro_.wCenterPos.x / map->GetChip(0, 0).GetWidth());
 
-    ro_.currentChipNo.LT = { static_cast<int>(ro_.sVertex.LT.x / map->GetChip(0, 0).GetWidth()),
-                            static_cast<int>((kWindowHeight - ro_.sVertex.LT.y) / map->GetChip(0, 0).GetHeight()) };
-    ro_.currentChipNo.RT = { static_cast<int>(ro_.sVertex.RT.x / map->GetChip(0, 0).GetWidth()),
-                            static_cast<int>((kWindowHeight - ro_.sVertex.RT.y) / map->GetChip(0, 0).GetHeight()) };
-    ro_.currentChipNo.LB = { static_cast<int>(ro_.sVertex.LB.x / map->GetChip(0, 0).GetWidth()),
-                            static_cast<int>((kWindowHeight - ro_.sVertex.LB.y) / map->GetChip(0, 0).GetHeight()) };
-    ro_.currentChipNo.RB = { static_cast<int>(ro_.sVertex.RB.x / map->GetChip(0, 0).GetWidth()),
-                            static_cast<int>((kWindowHeight - ro_.sVertex.RB.y) / map->GetChip(0, 0).GetHeight()) };
+    CalcVertexCenterRectangle(&ro_);
+
+    ro_.currentChipNo.LT = { static_cast<int>(ro_.wVertex.LT.x / map->GetChip(0, 0).GetWidth()),
+                            static_cast<int>((ro_.wVertex.LT.y) / map->GetChip(0, 0).GetHeight()) };
+    ro_.currentChipNo.RT = { static_cast<int>(ro_.wVertex.RT.x / map->GetChip(0, 0).GetWidth()),
+                            static_cast<int>((ro_.wVertex.RT.y) / map->GetChip(0, 0).GetHeight()) };
+    ro_.currentChipNo.LB = { static_cast<int>(ro_.wVertex.LB.x / map->GetChip(0, 0).GetWidth()),
+                            static_cast<int>((ro_.wVertex.LB.y) / map->GetChip(0, 0).GetHeight()) };
+    ro_.currentChipNo.RB = { static_cast<int>(ro_.wVertex.RB.x / map->GetChip(0, 0).GetWidth()),
+                            static_cast<int>((ro_.wVertex.RB.y) / map->GetChip(0, 0).GetHeight()) };
 
     // 各角の衝突判定
     if (map->GetChip(int(ro_.currentChipNo.LT.x), 
@@ -140,11 +142,7 @@ void Player::Move(GameManager* gm, Camera* camera, Map* map)
             );
     }
   
-
-
     camera->MakeCameraMatrix(&ro_);
-   
-   
 }
 
 
