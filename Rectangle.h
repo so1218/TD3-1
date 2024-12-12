@@ -3,7 +3,11 @@
 #include "Structures.h"
 
 
-void CalcVertexRectangle(RectangleObject* rectangle);
+void CalcVertexRectangle(RectangleObject* ro);
 
-void ConvertWorldToScreenRectangle(RectangleObject* rectangle);
+void CalcVertexCenterRectangle(RectangleObject* ro);
+
+void ConvertWorldToScreenRectangle(RectangleObject* ro);
+
+void ConvertScreenToWorldRectangle(RectangleObject* ro);
 

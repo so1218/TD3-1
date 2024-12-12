@@ -52,7 +52,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	PlayScene* p_ps;
 	p_ps = new PlayScene;
 
-	Player* p_player = new Player(650.0f, 350.0f, 4.0f, 4.0f);
+	Player* p_player = new Player(300.0f, 150.0f, 4.0f, 4.0f);
 
 	Camera* p_camera = new Camera;
 	

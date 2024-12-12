@@ -136,6 +136,9 @@ struct RectangleObject
 
 	//ワールド座標の中心の座標
 	Vector2 wCenterPos = { 0,0 };
+	Vector2 preWCenterPos = { 0,0 };
+	int wCenterCurrentChipNo[2] = {};
+
 	// ワールド用の４つ角 
 	Vertex wVertex;
 	// スクリーン用の４つ角 
@@ -144,11 +147,25 @@ struct RectangleObject
 	// 座標が移動する直前の4つ角の保管。当たり判定で使う。
 	Vertex preVertex;
 
+	VertexOnMap currentChipNo;
+	VertexOnMap preChipNo;
+
+	bool isCollisionBlock_[2][2];
+
 	Vector2 scale = { 1.0f,1.0f };
 	float theta = { 0.0f };
 	float width = 40;
 	float height = 40;
 
+	bool canMoveLeft;
+	bool canMoveRight;
+	bool canMoveUp;
+	bool canMoveDown;
+
+	bool isPressLeft;
+	bool isPressRight;
+	bool isPressUp;
+	bool isPressDown;
 	
 	Vector2 line = { 0.0f,0.0f };
 	Vector2 scroll = { 0,0 };

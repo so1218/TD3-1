@@ -2,6 +2,7 @@
 
 #include "Structures.h"
 #include "Camera.h"
+#include "Map.h"
 
 // プレイヤーの移動処理
 class Player 
@@ -33,7 +34,7 @@ public:
 
     //メンバ関数
     // プレイヤーの状態を管理するメンバ関数
-    void Move(GameManager* gm, Camera* camera);
+    void Move(GameManager* gm, Camera* camera, Map* map);
  
     // プレイヤーの描画処理
     void Draw();

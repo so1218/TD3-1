@@ -19,7 +19,7 @@ Scene UpdatePlayScene(Player* player, Map* map, GameManager* gm, Camera* camera)
 {
 	Scene nextScene = Play;
 
-	player->Move(gm, camera);
+	player->Move(gm, camera, map);
 
 	for (int i = 0; i < map->GetFloorHeight(); ++i)
 	{

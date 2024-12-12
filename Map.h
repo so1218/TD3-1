@@ -4,6 +4,13 @@
 #include "Draw.h"
 #include "Rectangle.h"
 
+
+enum ChipType
+{
+    none = 0,
+    block = 1,
+};
+
 class MapChip: GameObject
 {
 public:
@@ -43,6 +50,8 @@ public:
 
     RectangleObject& GetRectangleObject() { return ro_; }
     void SetRectangleObject(const RectangleObject& newRectangle) { ro_ = newRectangle; }
+
+    
    
 private:
     //メンバ変数
@@ -76,6 +85,7 @@ public:
     //メンバ関数
     void SetMap();
     void DrawMap();
+
 
     //メンバ変数
     //ゲッターとセッター
@@ -114,14 +124,6 @@ private:
     Easing easing;
     Vector2 pos;
     float easingTimer = 0.0f;
-
-    enum ChipType
-    {
-        none = 0,
-        block = 1,
-    };
-
-    int backType = 0;
 
     MapChip chip[kFloorHeight][kFloorWidth]; // チップの配列
 

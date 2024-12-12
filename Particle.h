@@ -8,40 +8,31 @@ void UpdateCenterToAroundParticle(Particle* particles,int amount, Vector2* start
 void DrawCenterToAroundParticle(Particle* particles, int amount);
 void InitCenterToAroundParticle(Particle* particles, int amount);
 
-//class Particle {
+//class Particle : public GameObject {
 //public:
-//    Vector2 pos;
-//    Vector2 velocity;
-//    Vector2 speed;
-//    unsigned int color, startColor, endColor;
-//    Easing easingInOut;
+//    bool isEmit = false;
+//    unsigned int colorRGB = 0x000000;
+//    unsigned int colorAlpha = 0xff;
+//
+//    float lifetime;
+//    int elapsedTime = 0;
+//    int direction;
+//    float radius = 10.0f;
+//    IntVector2 emitterRange = { 80, 80 };
+//    IntVector2 activeDistance = { 60, 60 };
+//    Vector2 speed = {};
+//    float gravity = 0.7f;
+//    int appearInterval = 20;
+//    int randNum = 0;
+//    Vector2 speedRange = { 2.0f, 2.0f };
+//    Vector2 speedAdd = { 1.0f, 1.0f };
+//
 //    BlendModeFunc blendMode;
-//    int width, height;
-//    int srcW, srcH;
-//    int frameCount;
-//    int appearInterval;
-//    bool isExist;
-//    bool hasExisted;
+//    Knockback knockback;
 //
-//    Particle() {
-//        // デフォルトの初期化
-//        isExist = false;
-//        hasExisted = false;
-//        frameCount = 0;
-//        appearInterval = 4;
-//        easingInOut.isEase = true;
-//        easingInOut.interval = 0.01f;
-//        blendMode.choiceType = BlendModeFunc::Add;
-//        width = height = 20;
-//        srcW = srcH = 80;
-//        color = 0xffffffff;
-//        startColor = 0xffffffff;
-//        endColor = 0xffffff00;
-//    }
-//
-//    virtual void Init(int amount) = 0;
-//    virtual void update() = 0; 
-//    virtual void draw() = 0;   
+//    Easing easingInOut;
+//    Easing easingOut;
+//    Easing easingIn;
 //};
 
 //上に向かって周囲にEmitterRangeの範囲で発生するパーティクル(aroundParticle->amountを初期化すること)
