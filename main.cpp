@@ -59,8 +59,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	GameManager* p_gm;
 	p_gm = new GameManager;
 
-	Map* p_map;
-	p_map = new Map;
+	Map* p_map = new Map();
 
 	InitTitleScene();
 	InitSelectScene();
@@ -142,7 +141,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 		case Play:
 
-			DrawPlayScene(p_player, p_map);
+			DrawPlayScene(p_player, p_map, p_camera);
 
 			break;
 

@@ -5,16 +5,17 @@
 void DrawQuadWithData(RectangleObject* ro, float srcW, float srcH, int GH, int spriteNumX, int spriteNumY, unsigned int color)
 {
     Novice::DrawQuad(
-        static_cast<int>(ro->sVertex.LT.x),
-        static_cast<int>(ro->sVertex.LT.y),
-        static_cast<int>(ro->sVertex.RT.x),
-        static_cast<int>(ro->sVertex.RT.y),
-        static_cast<int>(ro->sVertex.LB.x),
-        static_cast<int>(ro->sVertex.LB.y),
-        static_cast<int>(ro->sVertex.RB.x),
-        static_cast<int>(ro->sVertex.RB.y),
+        static_cast<int>(ro->sVertex.LT.x) + ro->shakingPos.x,
+        static_cast<int>(ro->sVertex.LT.y) + ro->shakingPos.y,
+        static_cast<int>(ro->sVertex.RT.x) + ro->shakingPos.x,
+        static_cast<int>(ro->sVertex.RT.y) + ro->shakingPos.y,
+        static_cast<int>(ro->sVertex.LB.x) + ro->shakingPos.x,
+        static_cast<int>(ro->sVertex.LB.y) + ro->shakingPos.y,
+        static_cast<int>(ro->sVertex.RB.x) + ro->shakingPos.x,
+        static_cast<int>(ro->sVertex.RB.y) + ro->shakingPos.y,
         int(srcW * spriteNumX), int(srcH * spriteNumY), int(srcW), int(srcH), GH, color);
 }
+
 
 
 Color HSVtoRGB(float h, float s, float v) {

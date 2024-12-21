@@ -5,12 +5,31 @@
 //コンストラクタ
 Camera::Camera()
 	: isShake(false), shakeDuration(20), shakeCounter(0), magnitude(15),
-	pos{ 325, 175 }, scale{ 1.0f, 1.0f }, theta(0.0f)
+	pos{ 650, 350 }, scale{ 1.0f, 1.0f }, theta(0.0f)
 {
 }
 
 //矩形の単体シェイク処理
-void Camera::Shake()
+void Camera::ShakeObject(RectangleObject* ro)
+{
+	if (ro->shakeCounter < ro->shakeDuration)
+	{
+		ro->shakingPos.x = rand() % (ro->magnitude * 2 + 1) - ro->magnitude;
+		ro->shakingPos.y = rand() % (ro->magnitude * 2 + 1) - ro->magnitude;
+
+		ro->shakeCounter++;
+	}
+	else
+	{
+		ro->shakingPos.x = 0;
+		ro->shakingPos.y = 0;
+		ro->shakeCounter = 0;
+		ro->isShake = false;
+	}
+}
+
+//カメラのシェイク処理
+void Camera::ShakeCamera()
 {
 	if (shakeCounter < shakeDuration)
 	{
@@ -164,14 +183,16 @@ Matrix3x3 Camera::MakeRectangleWorldMatrix(const RectangleObject* ro)
 	return Camera::MakeAffineMatrix(
 		ro->scale,
 		ro->theta,
-		{ ro->wCenterPos.x - Camera::pos.x, ro->wCenterPos.y - Camera::pos.y }
+		{ ro->wPos.x, ro->wPos.y  }
 	);
 }
 
 //カメラのワールド行列
 Matrix3x3 Camera::MakeCameraWorldMatrix()
 {
-	return Camera::MakeAffineMatrix(Camera::scale, Camera::theta, Camera::pos);
+	Vector2 cameraPos = { Camera::pos.x + Camera::shakingPos.x, Camera::pos.y + Camera::shakingPos.y };
+
+	return Camera::MakeAffineMatrix(Camera::scale, Camera::theta, cameraPos);
 }
 
 //ビュー行列
@@ -232,14 +253,15 @@ Matrix3x3 Camera::MakeViewportMatrix(float left, float top,
 /// <param name="camera">カメラ構造体</param>
 void Camera::MakeCameraMatrix(RectangleObject* ro)
 {
-	// プレイヤーとカメラのワールド行列を作成
-	Matrix3x3 playerWorldMatrix = Camera::MakeRectangleWorldMatrix(ro);
+	// 矩形とカメラのワールド行列を作成
+	Matrix3x3 rectangleWorldMatrix = Camera::MakeRectangleWorldMatrix(ro);
 
 	// ビュー行列を逆行列で作成
 	Matrix3x3 viewMatrix = Camera::MakeViewMatrix();
 
 	// 正射影行列
-	Matrix3x3 orthographic = Camera::MakeOrthographicMatrix(
+	Matrix3x3 orthographic = Camera::MakeOrthographicMatrix
+	(
 		-kWindowWidth / 2.0f,
 		kWindowHeight / 2.0f,
 		kWindowWidth / 2.0f,
@@ -250,15 +272,15 @@ void Camera::MakeCameraMatrix(RectangleObject* ro)
 	Matrix3x3 viewportMatrix = Camera::MakeViewportMatrix(0, 0, kWindowWidth, kWindowHeight);
 
 	// 行列を順番に掛け算して最終的なカメラ行列を作成
-	Matrix3x3 cameraMatrix = Camera::Multiply(playerWorldMatrix, viewMatrix);  // ワールド座標 -> ビュー座標
-	cameraMatrix = Camera::Multiply(cameraMatrix, orthographic);              // ビュー座標 -> 正規化デバイス座標
-	cameraMatrix = Camera::Multiply(cameraMatrix, viewportMatrix);            // 正規化デバイス座標 -> スクリーン座標
+	Camera::cameraMatrix = Camera::Multiply(rectangleWorldMatrix, viewMatrix);  // ワールド座標 -> ビュー座標
+	Camera::cameraMatrix = Camera::Multiply(Camera::cameraMatrix, orthographic);              // ビュー座標 -> 正規化デバイス座標
+	Camera::cameraMatrix = Camera::Multiply(Camera::cameraMatrix, viewportMatrix);            // 正規化デバイス座標 -> スクリーン座標
 
 	// 矩形の位置を変換
-	ro->sVertex.LT = Camera::Transform(ro->wVertex.LT, cameraMatrix);
-	ro->sVertex.RT = Camera::Transform(ro->wVertex.RT, cameraMatrix);
-	ro->sVertex.LB = Camera::Transform(ro->wVertex.LB, cameraMatrix);
-	ro->sVertex.RB = Camera::Transform(ro->wVertex.RB, cameraMatrix);
+	ro->sVertex.LT = Camera::Transform(ro->sDrawVertex.LT, Camera::cameraMatrix);
+	ro->sVertex.RT = Camera::Transform(ro->sDrawVertex.RT, Camera::cameraMatrix);
+	ro->sVertex.LB = Camera::Transform(ro->sDrawVertex.LB, Camera::cameraMatrix);
+	ro->sVertex.RB = Camera::Transform(ro->sDrawVertex.RB, Camera::cameraMatrix);
 }
 
 //矩形のカメラのデバッグ用関数

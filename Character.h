@@ -1,42 +1,38 @@
 #pragma once
 
-//class CHARACTER 
-//{
-//public:
-//    struct DATA
-//    {
-//        char charaId = 0;
-//        int groupId = 0;
-//        float wx = 0;
-//        float wy = 0;
-//        float vx = 0;
-//        float vy = 0;
-//        float speed = 0;
-//        float angle = 0;
-//        float scale = 1;
-//
-//        int hp = 0;
-//        float offsetLeft = 0;
-//        float offsetTop = 0;
-//        float offsetRight = 0;
-//        float offsetBottom = 0;
-//    };
-//protected:
-//    DATA Chara;
-//public:
-//    CHARACTER(class GAME* game);
-//    virtual void create();
-//    virtual void init();
-//    virtual void appear(float wx, float wy, float vx, float vy);
-//    virtual void update();
-//    virtual void draw();
-//    virtual void damage();
-//    int   hp() { return Chara.hp; }
-//    int   groupId() { return Chara.groupId; }
-//    char  charaId() { return Chara.charaId; }
-//    float wLeft() { return Chara.wx + Chara.offsetLeft; }
-//    float wTop() { return Chara.wy + Chara.offsetTop; }
-//    float wRight() { return Chara.wx + Chara.offsetRight; }
-//    float wBottom() { return Chara.wy + Chara.offsetBottom; }
-//    void setImgIdx(int i) { Chara.animData.imgIdx = i; }
-//};
+#include "Structures.h"
+
+class Character
+{
+public:
+    //コンストラクタで初期化
+    Character(float posX, float posY, float speedX, float speedY)
+        : pos_{ posX, posY }, velocity_{ speedX, speedY }, width_(50), height_(50), color_(0xFFFFFFFF) {}
+
+    //デストラクタ
+    virtual ~Character() {}
+
+    //ゲッターとセッター
+    Vector2 GetPos() const { return pos_; }
+    void SetPos(Vector2 newPos) { pos_ = newPos; }
+
+    Vector2 GetVelocity() const { return velocity_; }
+    void SetVelocity(Vector2 newVelocity) { velocity_ = newVelocity; }
+
+    int GetHeight() const { return height_; }
+    void SetHeight(int newHeight) { height_ = newHeight; }
+
+    int GetWidth() const { return width_; }
+    void SetWidth(int newWidth) { width_ = newWidth; }
+
+    unsigned int GetColor() const { return color_; }
+    void SetColor(unsigned int newColor) { color_ = newColor; }
+
+protected:
+    //メンバ変数
+    Vector2 pos_;      
+    Vector2 velocity_; 
+    int width_;        
+    int height_;       
+    unsigned int color_; 
+};

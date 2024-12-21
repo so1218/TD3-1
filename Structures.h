@@ -8,6 +8,7 @@
 #include <deque>
 #include <math.h>
 
+
 const int kWindowWidth = 1300;
 const int kWindowHeight = 700;
 
@@ -135,14 +136,15 @@ struct RectangleObject
 	unsigned int color = 0x000000ff;
 
 	//ワールド座標の中心の座標
-	Vector2 wCenterPos = { 0,0 };
-	Vector2 preWCenterPos = { 0,0 };
-	int wCenterCurrentChipNo[2] = {};
+	Vector2 wPos = { 0,0 };
+	Vector2 preWPos = { 0,0 };
+	IntVector2 wPosCurrentChipNo = {};
 
 	// ワールド用の４つ角 
 	Vertex wVertex;
 	// スクリーン用の４つ角 
 	Vertex sVertex;
+	Vertex sDrawVertex;
 
 	// 座標が移動する直前の4つ角の保管。当たり判定で使う。
 	Vertex preVertex;
@@ -166,7 +168,13 @@ struct RectangleObject
 	bool isPressRight;
 	bool isPressUp;
 	bool isPressDown;
-	
+
+	IntVector2 shakingPos = {};
+	bool isShake = false;
+	int shakeDuration = 20;
+	int shakeCounter = 0;
+	int magnitude = 15;
+
 	Vector2 line = { 0.0f,0.0f };
 	Vector2 scroll = { 0,0 };
 };

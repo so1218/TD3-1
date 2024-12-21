@@ -95,6 +95,8 @@ Matrix3x3 MakeTranslateMatrix(Vector2 translate)
 
 	return translateMatrix;
 }
+
+//ベクトルと3x3行列を使って、アフィン変換を行い、新しいベクトルを計算
 Vector2 Transform(Vector2 vector, Matrix3x3 matrix)
 {
 	Vector2 result;

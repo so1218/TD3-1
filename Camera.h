@@ -19,26 +19,27 @@ public:
     int shakeCounter = 0;
     int magnitude = 15;
     IntVector2 shakingPos = {};
+    Matrix3x3 cameraMatrix;
 
     // ワールド座標
-    Vector2 pos = { 325,175 };
+    Vector2 pos = { 650,350 };
     Vector2 scale = { 1.0f,1.0f };
     float theta = { 0.0f };
 
-    RectangleObject rect;
-
     //メンバ関数
 
-    // カメラのシェイク処理
-    void Shake();
+    //カメラのシェイク処理
+    void ShakeObject(RectangleObject* ro);
 
-    // カメラ行列の作成
+    //カメラのシェイク処理
+    void ShakeCamera();
+
+    //カメラ行列の作成
     void MakeCameraMatrix(RectangleObject* ro);
 
     //矩形のカメラのデバッグ用関数
     void DebugCameraMovement(GameManager* gm, RectangleObject* ro);
 
-private:
 
     // 行列計算関数群
     Matrix3x3 Multiply(Matrix3x3 matrix1, Matrix3x3 matrix2);
@@ -55,4 +56,5 @@ private:
         float right, float bottom);
     Matrix3x3 MakeViewportMatrix(float left, float top,
         float right, float bottom);
+
 };

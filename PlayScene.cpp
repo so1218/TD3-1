@@ -11,6 +11,7 @@
 #include "Function.h"
 #include "Camera.h"
 
+
 //========================================================
 // プレイシーンの更新処理
 //========================================================
@@ -29,6 +30,30 @@ Scene UpdatePlayScene(Player* player, Map* map, GameManager* gm, Camera* camera)
 		}
 	}
 
+	//プレイヤーのシェイク処理(試し)
+	if (gm->keys[DIK_F] && !gm->preKeys[DIK_F])
+	{
+		player->GetRectangleObject().isShake = true;
+	}
+
+	if (player->GetRectangleObject().isShake)
+	{
+		camera->ShakeObject(&player->GetRectangleObject());
+	}
+
+	//カメラのシェイク処理(試し)
+	if (gm->keys[DIK_I] && !gm->preKeys[DIK_I])
+	{
+		camera->isShake = true;
+	}
+
+	if (camera->isShake)
+	{
+		camera->ShakeCamera();
+	}
+
+	
+
 	camera->DebugCameraMovement(gm, &player->GetRectangleObject());
 				
 	return nextScene;
@@ -46,9 +71,9 @@ void ScreenPrintfPlayScene()
 }
 
 // プレイシーンの描画
-void DrawPlayScene(Player *player, Map* map)
+void DrawPlayScene(Player *player, Map* map, Camera* camera)
 {
-	map->DrawMap();
+	map->DrawMap(camera);
 
 	player->Draw();
 

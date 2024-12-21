@@ -3,6 +3,7 @@
 #include "Structures.h"
 #include "Draw.h"
 #include "Rectangle.h"
+#include "Camera.h"
 
 
 enum ChipType
@@ -22,17 +23,17 @@ public:
         ro_.height = height_;
     }
 
-    // ゲッターとセッター
     //メンバ関数
 
+    // ゲッターとセッター
     // チップの位置を設定
     Vector2 GetPosition() const { return pos_; }
     void SetPosition(float newPosX, float newPosY)
     {
         pos_.x = newPosX;
         pos_.y = newPosY;
-        ro_.wCenterPos.x = newPosX + width_ / 2;
-        ro_.wCenterPos.y = newPosY + height_ / 2;
+        ro_.wPos.x = newPosX + width_ / 2;
+        ro_.wPos.y = newPosY + height_ / 2;
     }
 
     //メンバ変数
@@ -49,9 +50,7 @@ public:
     void SetChipType(int newChipType) { chipType_ = newChipType; }
 
     RectangleObject& GetRectangleObject() { return ro_; }
-    void SetRectangleObject(const RectangleObject& newRectangle) { ro_ = newRectangle; }
-
-    
+    void SetRectangleObject(const RectangleObject& newRectangle) { ro_ = newRectangle; }   
    
 private:
     //メンバ変数
@@ -77,14 +76,14 @@ public:
             for (int j = 0; j < kFloorWidth; ++j)
             {
                 chip[i][j].SetPosition(float((j * chip[i][j].GetWidth())),
-                    float(GameManager::screenTop - chip[i][j].GetHeight() - (i * chip[i][j].GetHeight())));
+                float(GameManager::screenTop - chip[i][j].GetHeight() - (i * chip[i][j].GetHeight())));
             }
         }
     }
 
     //メンバ関数
     void SetMap();
-    void DrawMap();
+    void DrawMap(Camera* camera);
 
 
     //メンバ変数
@@ -101,7 +100,7 @@ public:
         {
             return chip[y][x];
         }
-        //エラーチェック、MapChipを返す
+        //エラーチェック
         static MapChip defaultChip;
         return defaultChip;
     }
@@ -121,13 +120,13 @@ private:
     static const int stageSum = 1;
     int stageNo_ = 0;
 
+    Vector2 lineStartPos;
+    Vector2 lineEndPos;
+
     Easing easing;
     Vector2 pos;
     float easingTimer = 0.0f;
 
-    MapChip chip[kFloorHeight][kFloorWidth]; // チップの配列
-
-    float targetPosX[kFloorHeight][kFloorWidth]; // ターゲットのX位置
-    float targetPosY[kFloorHeight][kFloorWidth]; // ターゲットのY位置
-    float moveSpeed = 0.0f; // 補完速度
+    //チップの配列
+    MapChip chip[kFloorHeight][kFloorWidth];
 };

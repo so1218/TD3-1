@@ -7,7 +7,7 @@
 // プレイシーンの更新処理
 Scene UpdatePlayScene(Player* player, Map* map, GameManager* gm, Camera* camera);
 
-void DrawPlayScene(Player* player, Map* map);
+void DrawPlayScene(Player* player, Map* map, Camera* camera);
 // プレイシーンの初期化処理
 void InitPlayScene(Player* player);
 

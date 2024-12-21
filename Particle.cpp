@@ -9,6 +9,103 @@
 #include "Vector.h"
 #include "Function.h"
 #include <stdlib.h>
+#include "Particle.h"
+
+//Particle::Particle() {
+//    // デフォルト値で初期化
+//    isExist = false;
+//    hasExisted = false;
+//    frameCount = 0;
+//    appearInterval = 4;
+//    width = 20;
+//    height = 20;
+//    color = 0xffffffff;
+//    startColor = 0xffffffff;
+//    endColor = 0xffffff00;
+//    speed = { 1.0f, 1.0f };
+//    gravity = 0.23f;
+//    emitterRange = { 20, 20 };
+//}
+//
+//void Particle::Update() {
+//    // パーティクルの状態を更新（位置、速度、色など）
+//    if (frameCount <= 0) {
+//        frameCount = appearInterval;
+//    }
+//
+//    if (frameCount == appearInterval && !isExist) {
+//        // パーティクルの生成ロジック（位置、速度、角度など）
+//        angle = static_cast<float>(rand()) / RAND_MAX * 2.0f * float(M_PI);
+//        velocity.x = speed.x * cosf(angle);
+//        velocity.y = speed.y * sinf(angle);
+//        isExist = true;
+//    }
+//
+//    // パーティクルの移動
+//    if (isExist) {
+//        pos.x += velocity.x;
+//        pos.y += velocity.y;
+//
+//        // イージングや色補間の更新処理
+//        if (!easingInOut.isEase) {
+//            isExist = false;
+//        }
+//
+//        // その他の更新処理（例: 残像、イージングの処理）
+//        ColorLinearInterpolation(startColor, endColor, color, easingInOut);
+//        CountEaseInOutTimer(easingInOut);
+//    }
+//
+//    frameCount--;
+//}
+//
+//void Particle::Draw() {
+//    // パーティクルの描画ロジック
+//    if (isExist) {
+//        UpdateBlendMode(&blendMode);
+//        DrawQuadWithData(&ro, 0, 0, 0, 0, 0, color);
+//        ResetBlendMode();
+//    }
+//}
+//
+//void ParticleEmitter::Update(Vector2* startPos) {
+//    // 各パーティクルを更新
+//    for (int i = 0; i < amount; ++i) {
+//        particles[i].Update();
+//    }
+//}
+//
+//void ParticleEmitter::Draw() {
+//    // 各パーティクルを描画
+//    for (int i = 0; i < amount; ++i) {
+//        particles[i].Draw();
+//    }
+//}
+//
+//void ParticleEmitter::Init() {
+//    // 初期化処理
+//    for (int i = 0; i < amount; ++i) {
+//        particles[i] = Particle();
+//        // 個別に初期設定を行う（位置、色など）
+//        particles[i].appearInterval = 4;
+//        particles[i].emitterRange = { 20, 20 };
+//        particles[i].speed = { 1.0f, 1.0f };
+//        particles[i].color = 0xffa500ff;
+//    }
+//}
+//
+//void ParticleEmitter::UpdateCenterToAroundParticle(Vector2* startPos) {
+//    for (int i = 0; i < amount; ++i) {
+//        Particle& particle = particles[i];
+//        if (!particle.isExist) {
+//            // 位置や速度の設定
+//            particle.pos.x = startPos->x;
+//            particle.pos.y = startPos->y;
+//            // 他の処理
+//        }
+//        particle.Update();
+//    }
+//}
 
 // 中心から周囲に向かうEmitterRangeの範囲で発生するパーティクル(aroundParticle->amountを初期化すること)
 void UpdateCenterToAroundParticle(Particle* particles, int amount, Vector2* startPos)
