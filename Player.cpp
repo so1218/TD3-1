@@ -16,32 +16,8 @@
 //========================================================
 
 
-
-
-
-void Player::Move(GameManager* gm, Camera* camera, Map* map)
+void Player::SearchTip(Map* map, Camera* camera)
 {
-    //中心の座標を保存
-    ro_.preWPos = ro_.wPos;
-
-    //キーボードでの移動
-    if (gm->keys[DIK_W]) 
-    {
-        ro_.wPos.y += 1.0f; 
-    }
-    else if(gm->keys[DIK_S]) 
-    {
-        ro_.wPos.y -= 1.0f;
-    }
-    else if (gm->keys[DIK_D])
-    {
-        ro_.wPos.x += 1.0f;
-    }
-    else if (gm->keys[DIK_A])
-    {
-        ro_.wPos.x -= 1.0f;
-    }
-
     //中心のチップナンバーを計算
     ro_.wPosCurrentChipNo.y = int(ro_.wPos.y / map->GetChip(0, 0).GetHeight());
     ro_.wPosCurrentChipNo.x = int(ro_.wPos.x / map->GetChip(0, 0).GetWidth());
@@ -50,89 +26,95 @@ void Player::Move(GameManager* gm, Camera* camera, Map* map)
     CalcWorldVertexRectangle(&ro_);
 
     //四隅の頂点の現在のチップナンバーを計算
-    ro_.currentChipNo.LT = { static_cast<int>(ro_.wVertex.LT.x   / (map->GetChip(0, 0).GetWidth())),
+    ro_.currentChipNo.LT = { static_cast<int>(ro_.wVertex.LT.x / (map->GetChip(0, 0).GetWidth())),
                              static_cast<int>((ro_.wVertex.LT.y) / (map->GetChip(0, 0).GetHeight())) };
-    ro_.currentChipNo.RT = { static_cast<int>(ro_.wVertex.RT.x   / (map->GetChip(0, 0).GetWidth())),
+    ro_.currentChipNo.RT = { static_cast<int>(ro_.wVertex.RT.x / (map->GetChip(0, 0).GetWidth())),
                              static_cast<int>((ro_.wVertex.RT.y) / (map->GetChip(0, 0).GetHeight())) };
-    ro_.currentChipNo.LB = { static_cast<int>(ro_.wVertex.LB.x   / (map->GetChip(0, 0).GetWidth())),
+    ro_.currentChipNo.LB = { static_cast<int>(ro_.wVertex.LB.x / (map->GetChip(0, 0).GetWidth())),
                              static_cast<int>((ro_.wVertex.LB.y) / (map->GetChip(0, 0).GetHeight())) };
-    ro_.currentChipNo.RB = { static_cast<int>(ro_.wVertex.RB.x   / (map->GetChip(0, 0).GetWidth())),
+    ro_.currentChipNo.RB = { static_cast<int>(ro_.wVertex.RB.x / (map->GetChip(0, 0).GetWidth())),
                              static_cast<int>((ro_.wVertex.RB.y) / (map->GetChip(0, 0).GetHeight())) };
 
     camera->pos = { ro_.wPos.x,ro_.wPos.y };
+}
 
-    // 各角の衝突判定
-    /*if (map->GetChip(int(ro_.currentChipNo.LT.x), 
-        int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none
-        &&
-        map->GetChip(int(ro_.currentChipNo.LB.x),
-        int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none)
-    {
-        ro_.canMoveLeft = true;
-    }
-    if (map->GetChip(int(ro_.currentChipNo.RT.x),
-        int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::none
-        &&
-        map->GetChip(int(ro_.currentChipNo.RB.x),
-        int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
-    {
-        ro_.canMoveRight = true;
-    }
-    if (map->GetChip(int(ro_.currentChipNo.LT.x),
-        int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none
-        &&
-        map->GetChip(int(ro_.currentChipNo.RT.x),
-        int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::none)
-    {
-        ro_.canMoveUp = true;
-    }
-    if (map->GetChip(int(ro_.currentChipNo.LB.x),
-        int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none
-        &&
-        map->GetChip(int(ro_.currentChipNo.RB.x),
-        int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
-    {
-        ro_.canMoveDown = true;
-    }
 
-    if (ro_.canMoveUp)
+void Player::Move(GameManager* gm, Camera* camera, Map* map)
+{
+    if (gm->keys[DIK_W])
     {
-        if (!ro_.canMoveLeft || !ro_.canMoveRight)
+        for (int i = 0; i < 50; i++)
         {
-            if (ro_.isPressUp)
+            Player::SearchTip(map, camera);
+            if (map->GetChip(int(ro_.currentChipNo.LT.x), int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none ||
+                map->GetChip(int(ro_.currentChipNo.RT.x), int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::none)
             {
-                ro_.wCenterPos.y = ro_.preWCenterPos.y - 5.0f / 2.0f;
+                ro_.wPos.y += 0.1f;
+            }
+            else
+            {
+                ro_.wPos.y -= 0.1f;
+                break;
             }
         }
     }
-    else
+    else if (gm->keys[DIK_S])
     {
-        ro_.wCenterPos.y = static_cast<float>(
-            (static_cast<int>(ro_.wVertex.LT.y) / map->GetChip(0, 0).GetHeight() + 1) *
-            map->GetChip(0, 0).GetHeight() * ro_.height / 2
-        );
-    }
-
-    if (ro_.canMoveDown)
-    {
-        if (!ro_.canMoveLeft || !ro_.canMoveRight)
+        for (int i = 0; i < 50; i++)
         {
-            if (ro_.isPressDown)
+            Player::SearchTip(map, camera);
+            if (map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none ||
+                map->GetChip(int(ro_.currentChipNo.RB.x), int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
             {
-                ro_.wCenterPos.y = ro_.preWCenterPos.y - 5.0f / 2.0f;
+                ro_.wPos.y -= 0.1f;
+            }
+            else
+            {
+                ro_.wPos.y += 0.1f;
+                break;
             }
         }
     }
-    else
+    else if (gm->keys[DIK_D])
     {
-        ro_.wCenterPos.y = static_cast<float>(
-            (static_cast<int>(ro_.wVertex.LT.y) / map->GetChip(0, 0).GetHeight() + 1) *
-            map->GetChip(0, 0).GetHeight() * ro_.height / 2
-            );
-    }*/
-  
-    //カメラ座標に変換
+        for (int i = 0; i < 50; i++)
+        {
+            Player::SearchTip(map, camera);
+            if (map->GetChip(int(ro_.currentChipNo.RT.x), int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::none ||
+                map->GetChip(int(ro_.currentChipNo.RB.x), int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
+            {
+                ro_.wPos.x += 0.1f;
+            }
+            else
+            {
+                ro_.wPos.x -= 0.1f;
+                break;
+            }
+        }
+    }
+    else if (gm->keys[DIK_A])
+    {
+        for (int i = 0; i < 50; i++)
+        {
+            Player::SearchTip(map, camera);
+            if (map->GetChip(int(ro_.currentChipNo.LT.x), int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none ||
+                map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none)
+            {
+                ro_.wPos.x -= 0.1f;
+            }
+            else
+            {
+                ro_.wPos.x += 0.1f;
+                break;
+            }
+        }
+    }
+
+    Player::SearchTip(map, camera);
+
+
     camera->MakeCameraMatrix(&ro_);
+
 }
 
 

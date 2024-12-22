@@ -31,6 +31,9 @@ public:
     //プレイヤーの状態を管理するメンバ関数
     void Move(GameManager* gm, Camera* camera, Map* map);
 
+    //プレイヤー四隅のチップ検索
+    void SearchTip(Map* map, Camera* camera);
+
     //プレイヤーの描画処理
     void Draw();
 
