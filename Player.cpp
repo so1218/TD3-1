@@ -46,7 +46,7 @@ void Player::Move(GameManager* gm, Camera* camera, Map* map)
         for (int i = 0; i < 50; i++)
         {
             Player::SearchTip(map, camera);
-            if (map->GetChip(int(ro_.currentChipNo.LT.x), int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none ||
+            if (map->GetChip(int(ro_.currentChipNo.LT.x), int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none &&
                 map->GetChip(int(ro_.currentChipNo.RT.x), int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::none)
             {
                 ro_.wPos.y += 0.1f;
@@ -63,7 +63,7 @@ void Player::Move(GameManager* gm, Camera* camera, Map* map)
         for (int i = 0; i < 50; i++)
         {
             Player::SearchTip(map, camera);
-            if (map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none ||
+            if (map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none &&
                 map->GetChip(int(ro_.currentChipNo.RB.x), int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
             {
                 ro_.wPos.y -= 0.1f;
@@ -80,7 +80,7 @@ void Player::Move(GameManager* gm, Camera* camera, Map* map)
         for (int i = 0; i < 50; i++)
         {
             Player::SearchTip(map, camera);
-            if (map->GetChip(int(ro_.currentChipNo.RT.x), int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::none ||
+            if (map->GetChip(int(ro_.currentChipNo.RT.x), int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::none &&
                 map->GetChip(int(ro_.currentChipNo.RB.x), int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
             {
                 ro_.wPos.x += 0.1f;
@@ -97,7 +97,7 @@ void Player::Move(GameManager* gm, Camera* camera, Map* map)
         for (int i = 0; i < 50; i++)
         {
             Player::SearchTip(map, camera);
-            if (map->GetChip(int(ro_.currentChipNo.LT.x), int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none ||
+            if (map->GetChip(int(ro_.currentChipNo.LT.x), int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none &&
                 map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none)
             {
                 ro_.wPos.x -= 0.1f;
