@@ -41,12 +41,14 @@ void Player::SearchTip(Map* map, Camera* camera)
 
 void Player::Move(GameManager* gm, Camera* camera, Map* map)
 {
+    static int kuuuuuuuu = 0;
+
     if (gm->keys[DIK_W])
     {
         for (int i = 0; i < 50; i++)
         {
             Player::SearchTip(map, camera);
-            if (map->GetChip(int(ro_.currentChipNo.LT.x), int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none ||
+            if (map->GetChip(int(ro_.currentChipNo.LT.x), int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none &&
                 map->GetChip(int(ro_.currentChipNo.RT.x), int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::none)
             {
                 ro_.wPos.y += 0.1f;
@@ -63,7 +65,7 @@ void Player::Move(GameManager* gm, Camera* camera, Map* map)
         for (int i = 0; i < 50; i++)
         {
             Player::SearchTip(map, camera);
-            if (map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none ||
+            if (map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none &&
                 map->GetChip(int(ro_.currentChipNo.RB.x), int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
             {
                 ro_.wPos.y -= 0.1f;
@@ -80,7 +82,7 @@ void Player::Move(GameManager* gm, Camera* camera, Map* map)
         for (int i = 0; i < 50; i++)
         {
             Player::SearchTip(map, camera);
-            if (map->GetChip(int(ro_.currentChipNo.RT.x), int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::none ||
+            if (map->GetChip(int(ro_.currentChipNo.RT.x), int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::none &&
                 map->GetChip(int(ro_.currentChipNo.RB.x), int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
             {
                 ro_.wPos.x += 0.1f;
@@ -97,7 +99,7 @@ void Player::Move(GameManager* gm, Camera* camera, Map* map)
         for (int i = 0; i < 50; i++)
         {
             Player::SearchTip(map, camera);
-            if (map->GetChip(int(ro_.currentChipNo.LT.x), int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none ||
+            if (map->GetChip(int(ro_.currentChipNo.LT.x), int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none &&
                 map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none)
             {
                 ro_.wPos.x -= 0.1f;
@@ -112,6 +114,31 @@ void Player::Move(GameManager* gm, Camera* camera, Map* map)
 
     Player::SearchTip(map, camera);
 
+
+    Player::SearchTip(map, camera);
+    if (map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none &&
+        map->GetChip(int(ro_.currentChipNo.RB.x), int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
+    {
+        kuuuuuuuu++;
+    }
+    else kuuuuuuuu = 0;
+
+    for (int i = 0; i < kuuuuuuuu; i++)
+    {
+        Player::SearchTip(map, camera);
+        if (map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none ||
+            map->GetChip(int(ro_.currentChipNo.RB.x), int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
+        {
+            //ro_.wPos.y -= 重力加速度;
+            ro_.wPos.y -= 0.1f;
+        }
+        else
+        {
+            //ro_.wPos.y += 重力加速度;
+            ro_.wPos.y += 0.1f;
+            break;
+        }
+    }
 
     camera->MakeCameraMatrix(&ro_);
 
