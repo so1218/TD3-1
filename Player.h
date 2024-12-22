@@ -33,9 +33,12 @@ public:
     void SetRectangleObject(const RectangleObject& newRectangle) { ro_ = newRectangle; }
 
     //メンバ関数
+    // プレイヤー四隅のマップチップ判定
+    void SearchTip(Map* map);
+
     // プレイヤーの状態を管理するメンバ関数
     void Move(GameManager* gm, Camera* camera, Map* map);
- 
+
     // プレイヤーの描画処理
     void Draw();
 
