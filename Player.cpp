@@ -41,52 +41,39 @@ void Player::SearchTip(Map* map, Camera* camera)
 
 void Player::Move(GameManager* gm, Camera* camera, Map* map)
 {
-    static int kuuuuuuuu = 0;
+    static float Yspped = 0;
 
-    if (gm->keys[DIK_W])
+    // 現在のプレイヤーの１マス下のマップチップ検索
+    ro_.wPos.y -= 0.1f;
+    Player::SearchTip(map, camera);
+    ro_.wPos.y += 0.1f;
+
+    // WまたはSPACEが押された かつ プレイヤーの１ピクセル下がblock なら ジャンプ
+    if (((gm->keys[DIK_W] && !gm->preKeys[DIK_W]) || (gm->keys[DIK_SPACE] && !gm->preKeys[DIK_SPACE])) &&
+        (map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::block ||
+        map->GetChip(int(ro_.currentChipNo.RB.x), int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::block))
     {
-        for (int i = 0; i < 50; i++)
-        {
-            Player::SearchTip(map, camera);
-            if (map->GetChip(int(ro_.currentChipNo.LT.x), int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none &&
-                map->GetChip(int(ro_.currentChipNo.RT.x), int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::none)
-            {
-                ro_.wPos.y += 0.1f;
-            }
-            else
-            {
-                ro_.wPos.y -= 0.1f;
-                break;
-            }
-        }
+        Yspped = 30;
     }
-    else if (gm->keys[DIK_S])
+
+    // 現在のプレイヤーのマップチップ検索
+    Player::SearchTip(map, camera);
+
+    // Dが押された なら 右に移動
+    if (gm->keys[DIK_D])
     {
         for (int i = 0; i < 50; i++)
         {
+            // 移動後のマップチップ検索
             Player::SearchTip(map, camera);
-            if (map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none &&
-                map->GetChip(int(ro_.currentChipNo.RB.x), int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
-            {
-                ro_.wPos.y -= 0.1f;
-            }
-            else
-            {
-                ro_.wPos.y += 0.1f;
-                break;
-            }
-        }
-    }
-    else if (gm->keys[DIK_D])
-    {
-        for (int i = 0; i < 50; i++)
-        {
-            Player::SearchTip(map, camera);
+
+            // プレイヤー右上にブロックがない かつ 右下にもブロックがない なら 0.1右に移動
             if (map->GetChip(int(ro_.currentChipNo.RT.x), int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::none &&
                 map->GetChip(int(ro_.currentChipNo.RB.x), int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
             {
                 ro_.wPos.x += 0.1f;
             }
+            // プレイヤー右上にブロックがある または 右下にブロックがある なら 0.1左に移動してループを抜ける(めり込み回避)
             else
             {
                 ro_.wPos.x -= 0.1f;
@@ -94,16 +81,21 @@ void Player::Move(GameManager* gm, Camera* camera, Map* map)
             }
         }
     }
-    else if (gm->keys[DIK_A])
+    // Aが押された なら 左に移動
+    if (gm->keys[DIK_A])
     {
         for (int i = 0; i < 50; i++)
         {
+            // 移動後のマップチップ検索
             Player::SearchTip(map, camera);
+
+            // プレイヤー左上にブロックがない かつ 左下にもブロックがない なら 0.1左に移動
             if (map->GetChip(int(ro_.currentChipNo.LT.x), int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::none &&
                 map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none)
             {
                 ro_.wPos.x -= 0.1f;
             }
+            // プレイヤー左上にブロックがある または 左下にブロックがある なら 0.1右に移動してループを抜ける(めり込み回避)
             else
             {
                 ro_.wPos.x += 0.1f;
@@ -112,36 +104,51 @@ void Player::Move(GameManager* gm, Camera* camera, Map* map)
         }
     }
 
+    // 移動後のマップチップ検索
     Player::SearchTip(map, camera);
 
+    // 重力処理
+    if (Yspped != 0)
+    {
+        // 例：Yspped = 3.2 なら 0.1移動を32回繰り返す
+        // これによりめり込みを防止する
+        for (int i = 0; i < int(fabsf(Yspped) * 10); i++)
+        {
+            if (Yspped > 0)ro_.wPos.y += 0.1f;
+            else if (Yspped < 0)ro_.wPos.y -= 0.1f;
+
+            Player::SearchTip(map, camera);
+
+            // プレイヤー左下にブロックがある または 右下にブロックがある なら 0.1上に移動してループを抜ける(めり込み回避)
+            if (map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::block ||
+                map->GetChip(int(ro_.currentChipNo.RB.x), int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::block)
+            {
+                ro_.wPos.y += 0.1f;
+                break;
+            }
+            // プレイヤー左上にブロックがある または 右上にブロックがある なら 0.1下に移動してループを抜ける(めり込み回避)
+            if (map->GetChip(int(ro_.currentChipNo.LT.x), int(ro_.currentChipNo.LT.y)).GetChipType() == ChipType::block ||
+                map->GetChip(int(ro_.currentChipNo.RT.x), int(ro_.currentChipNo.RT.y)).GetChipType() == ChipType::block)
+            {
+                ro_.wPos.y -= 0.1f;
+                break;
+            }
+        }
+    }
 
     Player::SearchTip(map, camera);
+    // プレイヤー左下にブロックがない かつ 右下にもブロックがない なら 重力加速度を計算(現在２)
     if (map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none &&
         map->GetChip(int(ro_.currentChipNo.RB.x), int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
     {
-        kuuuuuuuu++;
+        Yspped -= 2;
     }
-    else kuuuuuuuu = 0;
-
-    for (int i = 0; i < kuuuuuuuu; i++)
+    // プレイヤー左下にブロックがある または 右下にブロックがある なら Y軸速度を０にする
+    else
     {
-        Player::SearchTip(map, camera);
-        if (map->GetChip(int(ro_.currentChipNo.LB.x), int(ro_.currentChipNo.LB.y)).GetChipType() == ChipType::none ||
-            map->GetChip(int(ro_.currentChipNo.RB.x), int(ro_.currentChipNo.RB.y)).GetChipType() == ChipType::none)
-        {
-            //ro_.wPos.y -= 重力加速度;
-            ro_.wPos.y -= 0.1f;
-        }
-        else
-        {
-            //ro_.wPos.y += 重力加速度;
-            ro_.wPos.y += 0.1f;
-            break;
-        }
+        Yspped = 0;
     }
-
     camera->MakeCameraMatrix(&ro_);
-
 }
 
 
